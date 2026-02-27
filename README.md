@@ -75,21 +75,17 @@ Visit `http://127.0.0.1:8000/contactus` to exercise the contact form. With no ex
 | `DEFAULT_FROM_EMAIL`    | Sender email address (verify in SendGrid if using API)                | `no-reply@textutils.np`             |
 | `CONTACT_RECIPIENT_EMAIL` | Receiver address for contact form messages                         | `hrjobportal.system@gmail.com`      |
 | `DJANGO_EMAIL_BACKEND`  | Override Django email backend (e.g. SMTP backend)                     | `django.core.mail.backends.console.EmailBackend` |
-| `DJANGO_DEBUG`          | Set to `False` in production                                         | `True`                              |
-| `ALLOWED_HOSTS`         | Comma-separated hosts permitted by Django                            | (empty)                             |
 
 ---
 
 ## 📦 Deployment Notes
 
-Designed to deploy easily on [Render.com](https://render.com) or similar platforms. Key points:
+Ready to deploy on [Render.com](https://render.com) or similar platforms:
 
-- Render blocks outbound SMTP ports; using SendGrid's HTTP API avoids that limitation.
-- Configure environment variables via the service dashboard.
-- Ensure `DEBUG=False` and set `ALLOWED_HOSTS` appropriately before publishing.
-- Specify Python runtime with `runtime.txt` (included) to lock to Python 3.13.
-- Requirements are listed in `requirements.txt`, which currently pins `Django>=5.2.3`, `requests`, `gunicorn`, and `whitenoise`.
-- **Static assets**: `STATIC_ROOT` is set to `staticfiles` and WhiteNoise is configured to serve them. The build step runs `python manage.py collectstatic --noinput` (Render does this automatically if `DISABLE_COLLECTSTATIC` is not set).
+- `ALLOWED_HOSTS = ['*']` allows all hosts.
+- `DEBUG = True` — toggle to `False` in settings if needed for production.
+- Static files handled by WhiteNoise (automatic).
+- Optional: Set `SENDGRID_API_KEY` for email notifications.
 
 ---
 
