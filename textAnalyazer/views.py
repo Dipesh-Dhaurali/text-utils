@@ -1,5 +1,11 @@
+import os
+import logging
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+
+logger = logging.getLogger(__name__)
 
 def htmlform(request):
     return render(request,'index.html')
@@ -124,7 +130,75 @@ def features(request):
     return render(request,'features.html')
 
 def contact(request):
-    return render(request,'contact.html')
+    # Handle contact form POST
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        gender = request.POST.get('gender', '').strip()
+        age = request.POST.get('age', '').strip()
+        dob = request.POST.get('dob', '').strip()
+        country = request.POST.get('country', '').strip()
+        other_country = request.POST.get('other_country', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        to_email = getattr(settings, 'CONTACT_RECIPIENT_EMAIL', 'hrjobportal.system@gmail.com')
+        subject = f"Website contact form submission from {email or phone or 'Anonymous'}"
+        plain = (
+            f"Email: {email}\nPhone: {phone}\nGender: {gender}\nAge: {age}\nDOB: {dob}\n"
+            f"Country: {other_country or country}\n\nMessage:\n{message}\n"
+        )
+        html = (
+            f"<p><strong>Email:</strong> {email}</p>"
+            f"<p><strong>Phone:</strong> {phone}</p>"
+            f"<p><strong>Gender:</strong> {gender}</p>"
+            f"<p><strong>Age:</strong> {age}</p>"
+            f"<p><strong>DOB:</strong> {dob}</p>"
+            f"<p><strong>Country:</strong> {other_country or country}</p>"
+            f"<hr><p>{message}</p>"
+        )
+
+        # Try SendGrid API (HTTP) first, fallback to Django email backend
+        sent = False
+        sendgrid_api_key = os.environ.get('SENDGRID_API_KEY')
+        if sendgrid_api_key:
+            try:
+                import requests
+                url = 'https://api.sendgrid.com/v3/mail/send'
+                payload = {
+                    'personalizations': [{ 'to': [{ 'email': to_email }] }],
+                    'from': { 'email': getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@textutils.np') },
+                    'subject': subject,
+                    'content': [
+                        { 'type': 'text/plain', 'value': plain },
+                        { 'type': 'text/html', 'value': html },
+                    ]
+                }
+                resp = requests.post(url, json=payload, headers={
+                    'Authorization': f'Bearer {sendgrid_api_key}',
+                    'Content-Type': 'application/json'
+                }, timeout=10)
+                if resp.status_code in (200, 202):
+                    sent = True
+                else:
+                    sent = False
+                    logger.error('SendGrid returned %s: %s', resp.status_code, resp.text)
+            except Exception as e:
+                sent = False
+                logger.exception('SendGrid send failed: %s', e)
+
+        if not sendgrid_api_key or not sent:
+            try:
+                msg = EmailMultiAlternatives(subject, plain, getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@textutils.np'), [to_email])
+                msg.attach_alternative(html, 'text/html')
+                msg.send()
+                sent = True
+            except Exception as e:
+                sent = False
+                logger.exception('Fallback email send failed: %s', e)
+
+        return render(request, 'contact.html', {'email_sent': sent})
+
+    return render(request,'contact.html', {'email_sent': None})
 
 def about(request):
     return render(request,'about.html')

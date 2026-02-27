@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+.eggs/
+*.manifest
+*.spec
+
+# Virtual environment
+venv/
+.venv/
+ENV/
+env/
+
+# SQLite database
+*.sqlite3
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+media
+staticfiles
+
+# VSCode
+.vscode/
+
+# Mac
+.DS_Store
+
+# Backup files
+*~
+
+# JetBrains
+.idea/
+
+# Dependencies
+pip-wheel-metadata/
+
+# Logs
+*.log
