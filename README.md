@@ -38,6 +38,10 @@ Form submissions are processed server-side and handled according to environment 
 git clone https://github.com/<yourusername>/text-utils.git
 cd text-utils
 
+# install dependencies (includes gunicorn for production)
+github.com/<yourusername>/text-utils.git
+cd text-utils
+
 # create and activate virtual environment
 python -m venv .venv
 .\.venv\Scripts\activate   # Windows
@@ -45,6 +49,9 @@ python -m venv .venv
 
 # install dependencies
 pip install -r requirements.txt
+
+# when deploying to Render or similar, ensure a Procfile is present (already added) which uses gunicorn:
+#   web: gunicorn textAnalyazer.wsgi --workers 3
 
 # apply database migrations
 python manage.py migrate
@@ -80,6 +87,8 @@ Designed to deploy easily on [Render.com](https://render.com) or similar platfor
 - Render blocks outbound SMTP ports; using SendGrid's HTTP API avoids that limitation.
 - Configure environment variables via the service dashboard.
 - Ensure `DEBUG=False` and set `ALLOWED_HOSTS` appropriately before publishing.
+- Specify Python runtime with `runtime.txt` (included) to lock to Python 3.13.
+- Requirements are listed in `requirements.txt`, which currently pins `Django>=5.2.3`, `requests`, and `gunicorn`.
 
 ---
 
