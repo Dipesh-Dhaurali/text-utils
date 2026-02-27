@@ -88,7 +88,8 @@ Designed to deploy easily on [Render.com](https://render.com) or similar platfor
 - Configure environment variables via the service dashboard.
 - Ensure `DEBUG=False` and set `ALLOWED_HOSTS` appropriately before publishing.
 - Specify Python runtime with `runtime.txt` (included) to lock to Python 3.13.
-- Requirements are listed in `requirements.txt`, which currently pins `Django>=5.2.3`, `requests`, and `gunicorn`.
+- Requirements are listed in `requirements.txt`, which currently pins `Django>=5.2.3`, `requests`, `gunicorn`, and `whitenoise`.
+- **Static assets**: `STATIC_ROOT` is set to `staticfiles` and WhiteNoise is configured to serve them. The build step runs `python manage.py collectstatic --noinput` (Render does this automatically if `DISABLE_COLLECTSTATIC` is not set).
 
 ---
 
