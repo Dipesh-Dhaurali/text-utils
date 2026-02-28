@@ -38,9 +38,6 @@ Form submissions are processed server-side and handled according to environment 
 git clone https://github.com/Dipesh-Dhaurali/text-utils
 cd text-utils
 
-# install dependencies (includes gunicorn for production)
-github.com/<yourusername>/text-utils.git
-cd text-utils
 
 # create and activate virtual environment
 python -m venv .venv
