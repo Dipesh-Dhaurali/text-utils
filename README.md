@@ -27,7 +27,7 @@ Form submissions are processed server-side and handled according to environment 
 1. **SendGrid HTTP API** (preferred) when `SENDGRID_API_KEY` is defined. Messages are delivered to `CONTACT_RECIPIENT_EMAIL` (default `hrjobportal.system@gmail.com`) and sent from `DEFAULT_FROM_EMAIL` (must be a verified sender).
 2. **Fallback** to Django's email backend when no SendGrid key is available. The default backend prints the email to the console (ideal for local development).
 
-> 🔁 You can also bypass emailing altogether by persisting submissions in the database and reviewing them in Django Admin.
+
 
 ---
 
