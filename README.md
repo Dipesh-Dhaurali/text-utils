@@ -65,44 +65,19 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000/contactus` to exercise the contact form. With no external email provider configured, messages appear in the terminal.
 
----
 
-## ⚙️ Environment Variables
 
-| Variable                | Description                                                           | Default                             |
-|-------------------------|-----------------------------------------------------------------------|-------------------------------------|
-| `SENDGRID_API_KEY`      | SendGrid API key for HTTP mail delivery                               | *none*                              |
-| `DEFAULT_FROM_EMAIL`    | Sender email address (verify in SendGrid if using API)                | `no-reply@textutils.np`             |
-| `CONTACT_RECIPIENT_EMAIL` | Receiver address for contact form messages                         | `hrjobportal.system@gmail.com`      |
-| `DJANGO_EMAIL_BACKEND`  | Override Django email backend (e.g. SMTP backend)                     | `django.core.mail.backends.console.EmailBackend` |
-
----
-
-## 📦 Deployment Notes
-
-Ready to deploy on [Render.com](https://render.com) or similar platforms:
-
-- `ALLOWED_HOSTS = ['*']` allows all hosts.
-- `DEBUG = True` — toggle to `False` in settings if needed for production.
-- Static files handled by WhiteNoise (automatic).
-- Optional: Set `SENDGRID_API_KEY` for email notifications.
-
----
-
-## 📋 GitHub Usage (Optional)
+## 📋 GitHub Usage
 
 ```bash
 git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin git@github.com:<yourusername>/text-utils.git
+git remote add origin main
 git push -u origin main
 ```
 
-A `.gitignore` is included to exclude Python caches, database file, virtual environments, etc.
-
----
 
 ## 🔮 Future Improvements
 
@@ -112,10 +87,5 @@ A `.gitignore` is included to exclude Python caches, database file, virtual envi
 
 ---
 
-## 📝 License
-
-This repository is provided **without a formal license**. Use and modify at your own risk.
-
----
 
 *Created with ❤️ by Dipesh Dhaurali*
