@@ -35,7 +35,7 @@ Form submissions are processed server-side and handled according to environment 
 
 ```bash
 # clone repository
-git clone https://github.com/<yourusername>/text-utils.git
+git clone https://github.com/Dipesh-Dhaurali/text-utils
 cd text-utils
 
 # install dependencies (includes gunicorn for production)
